@@ -37,4 +37,9 @@ public class Task {
     @UpdateTimestamp
     @Column(nullable = false)
     private Instant updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.status = TaskStatus.PENDING;
+    }
 }
