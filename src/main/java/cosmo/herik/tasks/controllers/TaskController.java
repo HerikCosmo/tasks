@@ -2,6 +2,8 @@ package cosmo.herik.tasks.controllers;
 
 import cosmo.herik.tasks.entities.Task;
 import cosmo.herik.tasks.services.TaskService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +19,10 @@ public class TaskController {
     }
 
     @PostMapping(consumes = {"application/json"})
-    public void create(@RequestBody Task task) {
+    public ResponseEntity<Void> create(@RequestBody Task task) {
         taskService.create(task);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
@@ -28,7 +32,10 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public Task findById(@PathVariable String id) {
-        var taskId = UUID.fromString(id);
-        return taskService.findById(taskId);
+
+            var taskId = UUID.fromString(id);
+            return taskService.findById(taskId);
+
+
     }
 }
