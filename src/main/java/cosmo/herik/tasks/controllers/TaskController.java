@@ -1,6 +1,7 @@
 package cosmo.herik.tasks.controllers;
 
 import cosmo.herik.tasks.dto.request.CreateTaskRequest;
+import cosmo.herik.tasks.dto.request.UpdateTaskRequest;
 import cosmo.herik.tasks.dto.response.TaskResponse;
 import cosmo.herik.tasks.services.TaskService;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,19 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public TaskResponse findById(@PathVariable String id) {
-            var taskId = UUID.fromString(id);
-            return taskService.findById(taskId);
+        var taskId = UUID.fromString(id);
+        return taskService.findById(taskId);
+    }
+
+    @PutMapping("/{id}")
+    public TaskResponse update(@PathVariable String id, @RequestBody UpdateTaskRequest taskRequest) {
+        var taskId = UUID.fromString(id);
+        return taskService.update(taskId, taskRequest);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable String id) {
+        taskService.delete(UUID.fromString(id));
     }
 }

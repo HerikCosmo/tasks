@@ -1,6 +1,7 @@
 package cosmo.herik.tasks.services;
 
 import cosmo.herik.tasks.dto.request.CreateTaskRequest;
+import cosmo.herik.tasks.dto.request.UpdateTaskRequest;
 import cosmo.herik.tasks.dto.response.TaskResponse;
 import cosmo.herik.tasks.exceptions.TaskNotFoundException;
 import cosmo.herik.tasks.repositories.TaskRepository;
@@ -33,5 +34,23 @@ public class TaskService {
                 .orElseThrow(() -> new TaskNotFoundException(id));
 
         return TaskResponse.fromEntity(task);
+    }
+
+    public TaskResponse update(UUID id, UpdateTaskRequest taskRequest) {
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
+        task.setTitle(taskRequest.title());
+        task.setDescription(taskRequest.description());
+        task.setStatus(taskRequest.status());
+
+        return TaskResponse.fromEntity(taskRepository.save(task));
+    }
+
+    public void delete(UUID id) {
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
+        taskRepository.delete(task);
     }
 }
