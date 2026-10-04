@@ -27,9 +27,6 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    @Column(nullable = false)
-    private Instant date;
-
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
@@ -37,9 +34,4 @@ public class Task {
     @UpdateTimestamp
     @Column(nullable = false)
     private Instant updatedAt;
-
-    @PrePersist
-    public void prePersist() {
-        this.status = TaskStatus.PENDING;
-    }
 }

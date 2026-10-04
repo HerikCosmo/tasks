@@ -1,9 +1,9 @@
 package cosmo.herik.tasks.controllers;
 
-import cosmo.herik.tasks.entities.Task;
+import cosmo.herik.tasks.dto.request.CreateTaskRequest;
+import cosmo.herik.tasks.dto.response.TaskResponse;
 import cosmo.herik.tasks.services.TaskService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,23 +19,19 @@ public class TaskController {
     }
 
     @PostMapping(consumes = {"application/json"})
-    public ResponseEntity<Void> create(@RequestBody Task task) {
-        taskService.create(task);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskResponse create(@RequestBody CreateTaskRequest taskRequest) {
+        return taskService.create(taskRequest);
     }
 
     @GetMapping
-    public List<Task> findAll() {
+    public List<TaskResponse> findAll() {
         return taskService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Task findById(@PathVariable String id) {
-
+    public TaskResponse findById(@PathVariable String id) {
             var taskId = UUID.fromString(id);
             return taskService.findById(taskId);
-
-
     }
 }

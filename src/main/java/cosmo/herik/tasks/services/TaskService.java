@@ -1,6 +1,7 @@
 package cosmo.herik.tasks.services;
 
-import cosmo.herik.tasks.entities.Task;
+import cosmo.herik.tasks.dto.request.CreateTaskRequest;
+import cosmo.herik.tasks.dto.response.TaskResponse;
 import cosmo.herik.tasks.exceptions.TaskNotFoundException;
 import cosmo.herik.tasks.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,21 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public void create(Task task) {
-        taskRepository.save(task);
+    public TaskResponse create(CreateTaskRequest taskRequest) {
+        var task = taskRequest.toEntity();
+        var taskSaved = taskRepository.save(task);
+
+        return TaskResponse.fromEntity(taskSaved);
     }
 
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    public List<TaskResponse> findAll() {
+        return taskRepository.findAll().stream().map(TaskResponse::fromEntity).toList();
     }
 
-    public Task findById(UUID id) {
-        return taskRepository.findById(id)
+    public TaskResponse findById(UUID id) {
+        var task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
+
+        return TaskResponse.fromEntity(task);
     }
 }
