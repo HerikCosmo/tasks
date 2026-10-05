@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record TaskResponse(
         UUID id,
-        String name,
+        String title,
         String description,
         TaskStatus status
 ) {

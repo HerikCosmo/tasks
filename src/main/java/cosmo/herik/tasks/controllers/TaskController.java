@@ -36,7 +36,7 @@ public class TaskController {
         return taskService.findById(taskId);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path = "/{id}", consumes = {"application/json"})
     public TaskResponse update(@PathVariable String id, @RequestBody UpdateTaskRequest taskRequest) {
         var taskId = UUID.fromString(id);
         return taskService.update(taskId, taskRequest);
